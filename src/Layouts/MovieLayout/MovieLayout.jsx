@@ -1,39 +1,43 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import axios from "../../plugins/axios";
 import { Navbar } from "../../Components/Navbar/Navbar";
 
 import Popular from "../../assets/svg/popular.svg";
 import TopRated from "../../assets/svg/star.svg";
 import Upcoming from "../../assets/svg/computer.svg";
 
-
-import Action from "../../assets/svg/action.svg";
-import Adventure from "../../assets/svg/adventure.svg";
-import Animation from "../../assets/svg/animation.svg";
-import Comedy from "../../assets/svg/comedy.svg";
-import Crime from "../../assets/svg/crime.svg";
-import Documentary from "../../assets/svg/documentary.svg";
-
 const MovieLayout = ({ children }) => {
   const [isAsideOpen, setIsAsideOpen] = useState(false);
+
+  const navigate = useNavigate();
+
 
   const toggleAside = () => {
     setIsAsideOpen(!isAsideOpen);
   };
 
   const [menuCategories, setMenuCategories] = useState([
-    {id: 1, icon: `${Popular}`, menuName: 'Popular'},
-    {id: 2, icon: `${TopRated}`, menuName: 'Top Rated'},
-    {id: 3, icon: `${Upcoming}`, menuName: 'Upcoming'},
-  ])
+    { id: 1, icon: `${Popular}`, menuName: "Now Playing" },
+    { id: 2, icon: `${Popular}`, menuName: "Popular" },
+    { id: 3, icon: `${TopRated}`, menuName: "Top Rated" },
+    { id: 4, icon: `${Upcoming}`, menuName: "Upcoming" },
+  ]);
 
-  const [genres, setGenres] = useState([
-    {id: 1, icon: `${Action}`, menuName: 'Action'},
-    {id: 2, icon: `${Adventure}`, menuName: 'Adventure'},
-    {id: 3, icon: `${Animation}`, menuName: 'Animation'},
-    {id: 4, icon: `${Comedy}`, menuName: 'Comedy'},
-    {id: 5, icon: `${Crime}`, menuName: 'Crime'},
-    {id: 6, icon: `${Documentary}`, menuName: 'Documentary'},
-  ])
+  const [genres, setGenres] = useState([]);
+
+  async function getGenres(){
+    try{
+      let response = await axios.get(`genre/movie/list?api_key=${import.meta.env.VITE_TMDB_API_KEY}`)
+      setGenres(g => g = response.data.genres);
+    } catch(error){
+      console.log(error)
+    }
+  }
+
+  useEffect(() => {
+     getGenres()
+  }, [])
 
   return (
     <>
@@ -41,54 +45,71 @@ const MovieLayout = ({ children }) => {
       <Navbar onEmit={toggleAside} />
 
       {/* Layout Wrapper */}
-      <div className="flex flex-col lg:flex-row relative">
+      <div className="flex flex-col lg:flex-row">
         <aside
-          className={`fixed lg:sticky top-0 bg-[#EAEFBD] p-4 lg:z-90 z-20 
+          className={`fixed bg-[#EAEFBD] p-4 lg:z-90 z-20
           ${isAsideOpen ? "left-0" : "-left-full"} 
           lg:left-0 transition-all duration-300 lg:w-[20%] 
-          w-[80%] h-full lg:h-auto`}
+          w-[80%] h-full  overflow-scroll`}
         >
           <div>
-            <h3>Categories</h3>
-            <ul className="text-white">
-              {menuCategories.map((item, index) => (
-                <li
-                  className={`text-black p-2 font-light flex items-center hover:bg-gray-300 rounded-lg hover:ms-3  ${
-                    item.id == 1 ? "mt-3" : "mt-0"
-                  } `}
-                  key={item.id}
-                >
-                  <img src={item.icon} alt="" className="me-1" />
-                  {item.menuName}
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div>
-            <h3 className="mt-4">Genres</h3>
-            <ul className="text-white">
-              {genres.map((item, index) => (
-                <li
-                  className={`text-black p-2 font-light flex items-center hover:bg-gray-300 rounded-lg hover:ms-3  ${
-                    item.id == 1 ? "mt-2" : "mt-0"
-                  } `}
-                  key={item.id}
-                >
-                  <img src={item.icon} alt="" className="me-1" />
-                  {item.menuName}
-                </li>
-              ))}
-            </ul>
+            <div>
+              <h3>Categories</h3>
+              <ul className="text-white">
+                {menuCategories.map((item, index) => (
+                  <li
+                    className={`text-black p-2 font-light flex items-center hover:bg-gray-300 rounded-lg hover:ms-3  ${
+                      item?.id == 1 ? "mt-3" : "mt-0"
+                    } `}
+                    key={item?.id}
+                  >
+                    <img src={item.icon} alt="" className="me-1" />
+                    {item?.menuName}
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div>
+              <h3 className="mt-4">Genres</h3>
+              <ul className="text-white">
+                {genres.map((item, index) => (
+                  <li
+                    className={`text-black p-2 font-light flex items-center hover:bg-gray-300 rounded-lg hover:ms-3  ${
+                      index == 0 ? "mt-2" : "mt-0"
+                    } `}
+                    key={item?.id}
+                  >
+                    <Link
+                      to={{
+                        pathname: `/genres/${item?.id}/movies/`,
+                        search: `?name=${item?.name}`
+                      }}
+                    >
+                      {" "}
+                      {item?.name}{" "}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
         </aside>
 
         {/* Main Content */}
         <main
-          className={`min-h-screen bg-[#EFEFEF] flex flex-col w-full lg:w-[80%] transition-all duration-300`}
+          className={`min-h-screen bg-[#EFEFEF] flex flex-col w-full lg:w-[80%] transition-all duration-300 lg:ms-[18rem]`}
         >
-          <div className="flex-1 container mx-auto p-4">{children}</div>
+          <div className="flex-1 container mx-auto p-4 ">{children}</div>
         </main>
       </div>
+
+      {/* Footer Section */}
+      <footer>
+        <p className="text-center text-gray-600 p-2">
+          This product uses the TMDB API but is not endorsed or certified by
+          TMDB.
+        </p>
+      </footer>
     </>
   );
 };

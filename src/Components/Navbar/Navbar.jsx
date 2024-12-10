@@ -6,8 +6,9 @@ import styles from "./Navbar.module.css";
 import Love from "../../assets/svg/love.svg";
 import Home from "../../assets/svg/home.svg";
 
-export const Navbar = ({ onEmit }) => {
+import TMDBLogo from "../../assets/svg/tmdb-logo.svg";
 
+export const Navbar = ({ onEmit }) => {
   const emitSidebar = () => {
     onEmit();
   };
@@ -19,12 +20,20 @@ export const Navbar = ({ onEmit }) => {
           {/* Logo */}
           <div className="flex items-center">
             <Link to="/" className="text-2xl font-bold">
+              <img src={TMDBLogo} alt="" width="60" />
               Movie Explorer
             </Link>
           </div>
 
           {/* Desktop Menu */}
-          <div className="hidden md:flex space-x-4">
+          <div>
+            <input
+              type="text"
+              className="rounded p-1 w-80 hidden lg:flex"
+              placeholder="Search for movies"
+            />
+          </div>
+          <div className="hidden md:flex space-x-4 items-center">
             <Link
               to="/"
               className="hover:bg-gray-700 px-3 py-2 rounded-md text-sm font-medium flex items-center"
@@ -63,8 +72,6 @@ export const Navbar = ({ onEmit }) => {
           </div>
         </div>
       </div>
-
-    
     </nav>
   );
 };
