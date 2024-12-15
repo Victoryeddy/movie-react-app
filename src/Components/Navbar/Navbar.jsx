@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, createSearchParams } from "react-router-dom";
 
 import styles from "./Navbar.module.css";
 
@@ -12,6 +12,27 @@ export const Navbar = ({ onEmit }) => {
   const emitSidebar = () => {
     onEmit();
   };
+
+  const navigate = useNavigate();
+
+  const handleSearch = (e) => {
+    setKeyWord(w => e?.target?.value)
+    navigate({
+      pathname: "/movie-results",
+      search: createSearchParams({
+        query: `${keyword}`,
+        
+      }).toString(),
+    });
+  };
+
+
+
+  let [keyword, setKeyWord] = useState("");
+
+  
+
+ 
 
   return (
     <nav className="bg-gray-800 text-white sticky top-0 lg:z-50">
@@ -29,7 +50,9 @@ export const Navbar = ({ onEmit }) => {
           <div>
             <input
               type="text"
-              className="rounded p-1 w-80 hidden lg:flex"
+              value={keyword}
+              onChange={(e) => handleSearch(e)}
+              className="rounded p-1 w-80 hidden lg:flex text-black"
               placeholder="Search for movies"
             />
           </div>

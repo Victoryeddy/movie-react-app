@@ -12,32 +12,38 @@ const MovieLayout = ({ children }) => {
 
   const navigate = useNavigate();
 
-
   const toggleAside = () => {
     setIsAsideOpen(!isAsideOpen);
   };
 
   const [menuCategories, setMenuCategories] = useState([
-    { id: 1, icon: `${Popular}`, menuName: "Now Playing" },
-    { id: 2, icon: `${Popular}`, menuName: "Popular" },
-    { id: 3, icon: `${TopRated}`, menuName: "Top Rated" },
-    { id: 4, icon: `${Upcoming}`, menuName: "Upcoming" },
+    {
+      id: 1,
+      icon: `${Popular}`,
+      menuName: "Now Playing",
+      value: "now_playing",
+    },
+    { id: 2, icon: `${Popular}`, menuName: "Popular", value: "popular" },
+    { id: 3, icon: `${TopRated}`, menuName: "Top Rated", value: "top_rated" },
+    { id: 4, icon: `${Upcoming}`, menuName: "Upcoming", value: "upcoming" },
   ]);
 
   const [genres, setGenres] = useState([]);
 
-  async function getGenres(){
-    try{
-      let response = await axios.get(`genre/movie/list?api_key=${import.meta.env.VITE_TMDB_API_KEY}`)
-      setGenres(g => g = response.data.genres);
-    } catch(error){
-      console.log(error)
+  async function getGenres() {
+    try {
+      let response = await axios.get(
+        `genre/movie/list?api_key=${import.meta.env.VITE_TMDB_API_KEY}`
+      );
+      setGenres((g) => (g = response.data.genres));
+    } catch (error) {
+      console.log(error);
     }
   }
 
   useEffect(() => {
-     getGenres()
-  }, [])
+    getGenres();
+  }, []);
 
   return (
     <>
@@ -58,13 +64,22 @@ const MovieLayout = ({ children }) => {
               <ul className="text-white">
                 {menuCategories.map((item, index) => (
                   <li
-                    className={`text-black p-2 font-light flex items-center hover:bg-gray-300 rounded-lg hover:ms-3  ${
+                    className={`text-black p-2 font-light  hover:bg-gray-300 rounded-lg hover:ms-3  ${
                       item?.id == 1 ? "mt-3" : "mt-0"
                     } `}
                     key={item?.id}
                   >
-                    <img src={item.icon} alt="" className="me-1" />
-                    {item?.menuName}
+                    <Link
+                      to={{
+                        pathname: `/`,
+                        search: `?category=${item?.value}`,
+                      }}
+                      className="flex items-center"
+                      state={{ some: `${item?.value}` }}
+                    >
+                      <img src={item.icon} alt="" className="me-1" />
+                      {item?.menuName}
+                    </Link>
                   </li>
                 ))}
               </ul>
@@ -82,7 +97,7 @@ const MovieLayout = ({ children }) => {
                     <Link
                       to={{
                         pathname: `/genres/${item?.id}/movies/`,
-                        search: `?name=${item?.name}`
+                        search: `?name=${item?.name}`,
                       }}
                     >
                       {" "}
