@@ -114,20 +114,20 @@ export default function Home() {
               }}
               className="mySwiper"
             >
-              {nowPlaying.slice(0, 6).map((num, index) => (
+              {nowPlaying.slice(0, 6).map((item, index) => (
                 <SwiperSlide key={index}>
                   <div className="swiper-slide-content">
                     <div className="flex justify-between flex-col">
                       <div className=" z-20 absolute bottom-[25%] left-[7%] text-white">
-                        <span className="text-2xl">{num?.title}</span>
+                        <span className="text-2xl">{item?.title}</span>
                         <p className=" text-white w-2/3 font-light mt-3">
-                          {num?.overview?.slice(0, 200) + "..."}
+                          {item?.overview?.slice(0, 200) + "..."}
                         </p>
                       </div>
                     </div>
                     <img
-                      src={`https://image.tmdb.org/t/p/w500${num?.backdrop_path}`}
-                      alt={num?.title}
+                      src={`https://image.tmdb.org/t/p/w500${item?.backdrop_path}`}
+                      alt={item?.title}
                       className="swiper-image-cover rounded-2xl"
                     />
                     <div className="overlay"></div>
