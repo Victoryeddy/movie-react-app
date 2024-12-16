@@ -56,7 +56,7 @@ const MovieLayout = ({ children }) => {
           className={`fixed bg-[#EAEFBD] p-4 lg:z-90 z-20
           ${isAsideOpen ? "left-0" : "-left-full"} 
           lg:left-0 transition-all duration-300 lg:w-[20%] 
-          w-[80%] h-full  overflow-scroll`}
+         w-[60%] md:w-[40%] h-full  overflow-scroll`}
         >
           <div>
             <div>

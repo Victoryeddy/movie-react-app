@@ -112,7 +112,6 @@ export default function Home() {
                 delay: 2500,
                 disableOnInteraction: false,
               }}
-            
               className="mySwiper"
             >
               {nowPlaying.slice(0, 6).map((num, index) => (
@@ -122,7 +121,7 @@ export default function Home() {
                       <div className=" z-20 absolute bottom-[25%] left-[7%] text-white">
                         <span className="text-2xl">{num?.title}</span>
                         <p className=" text-white w-2/3 font-light mt-3">
-                          {num?.overview}
+                          {num?.overview?.slice(0, 200) + "..."}
                         </p>
                       </div>
                     </div>
