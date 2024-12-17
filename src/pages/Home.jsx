@@ -6,7 +6,6 @@ import MovieCard from "../Components/MovieCard/MovieCard";
 
 import LoadingIcon from "../assets/svg/loading-movie.gif";
 
-// import Swiper core and required modules
 import {
   EffectFade,
   Autoplay,
@@ -18,7 +17,6 @@ import {
 
 import { Swiper, SwiperSlide } from "swiper/react";
 
-// Import Swiper styles
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
@@ -30,7 +28,6 @@ export default function Home() {
 
   let category = searchParams.get("category");
 
-  let [numbers, setNumbers] = useState([1, 2, 3, 4, 5, 6, 7, 8]);
 
   let [nowPlaying, setNowPlaying] = useState([]);
 
@@ -93,7 +90,6 @@ export default function Home() {
             <img src={LoadingIcon} alt="Loading Icon" />
           ) : (
             <Swiper
-              // install Swiper modules
               effect={"fade"}
               modules={[
                 EffectFade,
@@ -132,7 +128,7 @@ export default function Home() {
                     />
                     <div className="overlay"></div>
                   </div>
-                </SwiperSlide> // Add `return` or use parentheses
+                </SwiperSlide> 
               ))}
             </Swiper>
           )}

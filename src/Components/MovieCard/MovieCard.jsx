@@ -60,23 +60,7 @@ const MovieCard = ({ movie }) => {
               >
                 Watch Now
               </button>
-              <div className="flex items-center space-x-2">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-6 w-6 text-yellow-500"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-5m3 3v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4m9-8v10a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2l-5-8m2-2v2a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2l-5-8a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"
-                  />
-                </svg>
-                <span className="text-gray-400">Watchlist</span>
-              </div>
+              
             </div>
           </div>
         </div>
