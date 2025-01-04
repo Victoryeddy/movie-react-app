@@ -9,7 +9,7 @@ import Home from "../../assets/svg/home.svg";
 import TMDBLogo from "../../assets/svg/tmdb-logo.svg";
 
 export const Navbar = ({ onEmit }) => {
- const debounceTimeout = useRef(null);
+  const debounceTimeout = useRef(null);
   let [keyword, setKeyWord] = useState("");
 
   const emitSidebar = () => {
@@ -19,17 +19,15 @@ export const Navbar = ({ onEmit }) => {
   const navigate = useNavigate();
 
   const handleInputSearch = (e) => {
+    setKeyWord((prev) => (prev = e.target.value));
 
-        
-        setKeyWord((prev) => prev = e.target.value);
+    if (debounceTimeout.current) {
+      clearTimeout(debounceTimeout.current);
+    }
 
-   if (debounceTimeout.current) {
-     clearTimeout(debounceTimeout.current);
-   }
-
-  debounceTimeout.current = setTimeout(() => {
-    search(e.target.value);
-  }, 700);
+    debounceTimeout.current = setTimeout(() => {
+      search(e.target.value);
+    }, 700);
   };
 
   const search = (query) => {
@@ -57,7 +55,6 @@ export const Navbar = ({ onEmit }) => {
 
           {/* Desktop Menu */}
           <div>
-            
             <input
               type="text"
               value={keyword}
