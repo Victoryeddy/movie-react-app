@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { Link, useNavigate, createSearchParams } from "react-router-dom";
 
 import styles from "./Navbar.module.css";
@@ -9,30 +9,39 @@ import Home from "../../assets/svg/home.svg";
 import TMDBLogo from "../../assets/svg/tmdb-logo.svg";
 
 export const Navbar = ({ onEmit }) => {
+ const debounceTimeout = useRef(null);
+  let [keyword, setKeyWord] = useState("");
+
   const emitSidebar = () => {
     onEmit();
   };
 
   const navigate = useNavigate();
 
-  const handleSearch = (e) => {
-    setKeyWord(w => e?.target?.value)
-    navigate({
-      pathname: "/movie-results",
-      search: createSearchParams({
-        query: `${keyword}`,
+  const handleInputSearch = (e) => {
+
         
-      }).toString(),
-    });
+        setKeyWord((prev) => prev = e.target.value);
+
+   if (debounceTimeout.current) {
+     clearTimeout(debounceTimeout.current);
+   }
+
+  debounceTimeout.current = setTimeout(() => {
+    search(e.target.value);
+  }, 700);
   };
 
-
-
-  let [keyword, setKeyWord] = useState("");
-
-  
-
- 
+  const search = (query) => {
+    if (query.trim()) {
+      navigate({
+        pathname: "/movie-results",
+        search: createSearchParams({
+          query: query,
+        }).toString(),
+      });
+    }
+  };
 
   return (
     <nav className="bg-gray-800 text-white sticky top-0 z-30 lg:z-50">
@@ -48,10 +57,11 @@ export const Navbar = ({ onEmit }) => {
 
           {/* Desktop Menu */}
           <div>
+            
             <input
               type="text"
               value={keyword}
-              onChange={(e) => handleSearch(e)}
+              onInput={(e) => handleInputSearch(e)}
               className="rounded p-1 w-80 hidden lg:flex text-black"
               placeholder="Search for movies"
             />
