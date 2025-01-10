@@ -27,7 +27,7 @@ export const Navbar = ({ onEmit }) => {
 
     debounceTimeout.current = setTimeout(() => {
       search(e.target.value);
-    }, 700);
+    }, 600);
   };
 
   const search = (query) => {
